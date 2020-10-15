@@ -64,7 +64,7 @@ public:
 		else// se nao ele vai para o proximo
 			inserirAux(raiz, informacao);
 	}
-//essa função vai preencher nos casos em que a arvore em questão não estiver vazia, entao vai comprar os valores e inserir direita ou esquerda
+//essa função vai preencher nos casos em que a arvore em questão não estiver vazia, entao vai comparar os valores e inserir direita ou esquerda
 	void inserirAux(No *noAtual, int informacao)
 	{
 		// se for menor, então insere à esquerda
@@ -115,6 +115,7 @@ public:
 			emOrdem(no_atual->getdireita());//passa para o filho a direita
 		}
 	}
+//função pré-ordem
 	void exibirPreOrdem(No* no_atual)
 	{
 		if(no_atual != NULL) //mesmo teste anterior
@@ -125,13 +126,14 @@ public:
 
 		}
 	}
-	void exibirPosOrdem(No* no_atual)  
+//função pós-ordem
+	void exibirPosOrdem(No* no_atual)
 	{
 		if(no_atual != NULL)//mesmo teste anterior
 		{
 			exibirPosOrdem(no_atual->getesquerda());//passa para o filho da esquerda
 			exibirPosOrdem(no_atual->getdireita());//passa para o filho a direita
-			cout << no_atual->getinformacao() << " ";// passa por toda a árvore, e só depois vir fazendo os prints dos elementos visitados
+			cout << no_atual->getinformacao() << " ";// passa por toda a árvore, e só depois vir fazendo a apresentação dos elementos visitados
 		}
 	}
 
@@ -139,7 +141,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-	setlocale(LC_ALL, "Portuguese");
+	setlocale(LC_ALL, "Portuguese"); //para a leitura acentuada das palavras
 	Arvore arv;
 
 
@@ -156,8 +158,8 @@ int main(int argc, char *argv[])
 	arv.inserir(17);
 
 	// percorre em ordem iniciando da raiz
-	cout<<"Olá Ana! vou inserir os valores para você\n"<<endl;
-	
+	cout << "Olá Ana! vou inserir os valores para você\n" << endl;
+
 	cout << "Em ordem:\n";
 	arv.emOrdem(arv.getRaiz());
 	cout << "\n\n";
