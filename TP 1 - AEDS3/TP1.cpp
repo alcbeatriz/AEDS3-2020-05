@@ -146,16 +146,18 @@ int main(int argc, char *argv[])
 
 
 // insere as informações: não consegui pegar do teclado :(
-	arv.inserir(2);
+	arv.inserir(10);
 	arv.inserir(3);
 	arv.inserir(5);
-	arv.inserir(7);
+	arv.inserir(2);
 	arv.inserir(13);
 	arv.inserir(11);
 	arv.inserir(23);
 	arv.inserir(31);
 	arv.inserir(19);
 	arv.inserir(17);
+	arv.inserir(8);
+	
 
 	// percorre em ordem iniciando da raiz
 	cout << "Olá Ana! vou inserir os valores para você\n" << endl;
