@@ -14,8 +14,10 @@ public:
 
 bool verificaNo(node no, vector<node> &caracterList) //verifica se o nó recebido ja esta presente no vetor
 {
-	for (int i = 0; i < caracterList.size(); i++)
-		if (no.caracter == caracterList.at(i).caracter)
+	for (unsigned int i = 0; i < caracterList.size(); i++) /*unsigned int é um modificador para determinar que um tipo numérico
+															inteiro é sem sinal. Ou seja, você só terá valores positivos nele.
+		   	   	   	   	   	   	   	   	   	   	   	   	   	Um int vai de -2147483648 à 2147483647. Um unsigned int vai de 0 à 4294967295.*/
+		if (no.caracter == caracterList.at(i).caracter) //at da o retorno da posição
 		{
 			caracterList.at(i).frequencia++;
 			return false;
@@ -23,47 +25,48 @@ bool verificaNo(node no, vector<node> &caracterList) //verifica se o nó recebido
 	return true;
 }
 
-string textoCodificado(string text, vector<node> caracterList)
+string textoCodificado(string text, vector<node> caracterList) //Para mostrar o texto codificado
 {
 	string data = " ";
 	node aux;
-	for (int i = 0; i < text.size(); i++) //percorre cada letra do texto
+	for (unsigned int i = 0; i < text.size(); i++) //percorre cada letra do texto
 	{
-		aux.caracter = tolower(text[i]); //Constroi um nó para cada letra do texto
+		aux.caracter = tolower(text[i]); //Constroi um nó para cada letra do texto (tolower faz a conversão para minuscula
+										// na hora de comparar as letras uma com as outras, assim A e a serão consideradas a mesma letra
 		aux.frequencia = 0;
 		aux.esquerda = NULL;
 		aux.direita = NULL;
-		for(int j = 0; j < caracterList.size(); j++)
+		for(unsigned int j = 0; j < caracterList.size(); j++)
 		{
 			if(aux.caracter == caracterList.at(j).caracter)
 			{
-				data += caracterList.at(j).code;
+				data += caracterList.at(j).code; //concatenação de String
 			}
 		}
 
 	}
-	return data;
+	return data; //retorna o texto
 }
 
 void mostraFrequencia(vector<node> caracterList) //mostra o vetor que contem as Letras e suas respectivas frequencias
 {
-	for (int i = 0; i < caracterList.size(); i++)
+	for (unsigned int i = 0; i < caracterList.size(); i++)
 		cout << caracterList.at(i).caracter << ":" << caracterList.at(i).frequencia << "\t\n";
 }
 
-void mostrarVetorAux(vector<node> caracterList) //mostra o vetor que contem as letras e seu codigo binario
+void mostrarCodigo(vector<node> caracterList) //mostra o vetor que contem as letras e seu codigo binario
 {
-	for (int i = 0; i < caracterList.size(); i++)
+	for (unsigned int i = 0; i < caracterList.size(); i++)
 		cout << caracterList.at(i).caracter << ": " << caracterList.at(i).code << '\n';
 }
 
-void ordenaVetor(vector<node> &caracterList) //ordena o vetor
+void ordenaVetor(vector<node> &caracterList) //ordena o vetor, compara a quantidade de vezes que uma letra aparece e cria um hanking
 {
 	node aux;
-	for (int i = 0; i < caracterList.size(); i++)
-		for (int j = 0; j < caracterList.size(); j++)
+	for (unsigned int i = 0; i < caracterList.size(); i++)
+		for (unsigned int j = 0; j < caracterList.size(); j++)
 			if (caracterList.at(i).frequencia > caracterList.at(j).frequencia)
-			{
+			{ //fazer a troca dos valores armazenados para ordenar a frequencia, ex:3,2,1
 				aux = caracterList.at(i);
 				caracterList.at(i) = caracterList.at(j);
 				caracterList.at(j) = aux;
@@ -74,7 +77,7 @@ void countFrequencia(string txt, vector<node> &caracterList) //cria o vetor de f
 {
 	node aux;
 
-	for (int i = 0; i < txt.size(); i++) //percorre cada letra do texto
+	for (unsigned int i = 0; i < txt.size(); i++) //percorre cada letra do texto
 	{
 		aux.caracter = tolower(txt[i]); //aux recebe cada letra
 		aux.frequencia = 0;                 //condicoes iniciais
@@ -88,7 +91,8 @@ void countFrequencia(string txt, vector<node> &caracterList) //cria o vetor de f
 		}
 	}
 
-	for (int i = 0; i < caracterList.size(); i++) //Troca o caracter de espaçamento por algo visivel
+	for (unsigned int i = 0; i < caracterList.size(); i++) //Troca o caracter de espaçamento por algo visivel
+															// para representar melhor o vazio
 	{
 		if (caracterList.at(i).caracter == " ")
 			caracterList.at(i).caracter = "[]";
@@ -97,55 +101,54 @@ void countFrequencia(string txt, vector<node> &caracterList) //cria o vetor de f
 	ordenaVetor(caracterList); //ordena o vetor
 }
 
-node *huffman(vector<node> caracterList) //faz huffamn
+node *huffman(vector<node> caracterList) //arvore huffamn 
 {
-	node *min1, *min2;
+	node *no1, *no2;
 	node *root;
 	node aux1, aux2;
 
-	while (caracterList.size() > 1) //faz essa verificaÃ§Ã£o pq nosso codigo reduz o tamanho do vetor a cada laÃ§o
+	while (caracterList.size() > 1) //faz a verifiicação pq o codigo reduz o tamanho do vetor
 	{
 		aux1 = caracterList.at(caracterList.size() - 1); //para receber os dois ultimos elementos do vetor
 		aux2 = caracterList.at(caracterList.size() - 2);
-
-		//criamos dois nÃ³s, min1 e min2 para aloca-los na arvore
-		min1 = new node;
-		min1->caracter = aux1.caracter;
-		min1->frequencia = aux1.frequencia;
-		min1->direita = aux1.direita;
-		min1->esquerda = aux1.esquerda;
-
-		min2 = new node;
-		min2->caracter = aux2.caracter;
-		min2->frequencia = aux2.frequencia;
-		min2->direita = aux2.direita;
-		min2->esquerda = aux2.esquerda;
-
-		//cria o root, para ser formado pela junÃ§Ã£o dos dois menores valores do vetor
-		root = new node;
-		root->caracter = min2->caracter + min1->caracter;
-		root->frequencia = min2->frequencia + min1->frequencia;
-		root->esquerda = min2;
-		root->direita = min1;
-
 		caracterList.pop_back(); //remove os dois ultimos elementos, pois ja estao alocados na arvore
 		caracterList.pop_back();
+
+		//criamos dois nós, no1 e no2 para aloca-los na arvore
+		no1 = new node;
+		no1->caracter = aux1.caracter;
+		no1->frequencia = aux1.frequencia;
+		no1->direita = aux1.direita;
+		no1->esquerda = aux1.esquerda;
+
+		no2 = new node;
+		no2->caracter = aux2.caracter;
+		no2->frequencia = aux2.frequencia;
+		no2->direita = aux2.direita;
+		no2->esquerda = aux2.esquerda;
+
+		//cria o root, para ser formado pela juncao dos dois menores valores do vetor
+		root = new node;
+		root->caracter = no2->caracter + no1->caracter;
+		root->frequencia = no2->frequencia + no1->frequencia;
+		root->esquerda = no2;
+		root->direita = no1;
 
 		caracterList.push_back(*root); //adiciona o elemento apos a juncao dos menores
 		ordenaVetor(caracterList);        //ordena
 	}
 
-	return root;
+	return root; //retorna a raiz
 }
 
 void setaValor(vector<node> &caracterList, node root) //coloca o valor do codigo de cada letra da arvore no vetor
 {
-	for (int i = 0; i < caracterList.size(); i++)
+	for (unsigned int i = 0; i < caracterList.size(); i++)
 		if (caracterList.at(i).caracter == root.caracter)
 			caracterList.at(i).code = root.code;
 }
 
-void coder(vector<node> &caracterList, node *root)
+void coder(vector<node> &caracterList, node *root) //setar o valor 0 ou 1
 {
 	if (root->esquerda != NULL || root->direita != NULL) // nao no folha
 	{
@@ -171,8 +174,8 @@ void menu()
 
 int main()
 {
-	setlocale(LC_ALL, "Portuguese");
-	string text = "algoritmo de huffman";
+	setlocale(LC_ALL, "Portuguese"); //ler acentuacao
+	string text = "Algoritmo de Huffman"; //texto a ser verificado
 	vector<node> caracterList;
 	node *root;
 	int op = 1;
@@ -185,7 +188,7 @@ int main()
 	int normalsize = text.size() * 8;
 	int compressedsize = data.size();
 	int percentual = 100.0 - (compressedsize * 100.0 / normalsize);
-	while (op > 0 && op < 5)
+	while (op > 0 && op < 4)
 	{
 
 		menu();
@@ -198,8 +201,8 @@ int main()
 			cout << "Texto a ser comprimido: " << endl << "\n" << text << "\n" << endl;
 			cout << "Texto comprimido: " << endl << "\n" << data << "\n" << endl;
 
-			cout << "Tamanho original do texto: " << normalsize <<" bits"<< endl;
-			cout << "Tamanho comprimido: " << compressedsize  <<" bits"<< endl;
+			cout << "Tamanho original do texto: " << normalsize << " bits" << endl;
+			cout << "Tamanho comprimido: " << compressedsize  << " bits" << endl;
 			cout << "O tamanho comprimido é " << percentual << "% menor que o tamanho original ";
 
 			break;
@@ -210,7 +213,7 @@ int main()
 
 		case 3:
 			system("cls");
-			mostrarVetorAux(caracterList);
+			mostrarCodigo(caracterList);
 			break;
 
 		case 4:
